@@ -1,1 +1,7 @@
-App Component
+<div class="grid-container">
+  <ng-container *ngFor="let x of Array(gridSizeX).keys(); trackBy: trackByFn;">
+    <ng-container *ngFor="let y of Array(gridSizeY).keys(); trackBy: trackByFn;">
+      <app-point [coordinates]="{x: x, y: y}" [checked]="pointsCheckFlags[x][y]"></app-point>
+    </ng-container>
+  </ng-container>
+</div>

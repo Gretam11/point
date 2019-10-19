@@ -1,0 +1,7 @@
+.grid-container {
+  width: 100%;
+  height: 97%;
+  display: grid;
+  grid-template-columns: repeat(125, auto [col-start]);
+  grid-template-rows: repeat(60, auto [row-start]);
+}
