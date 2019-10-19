@@ -2,6 +2,21 @@
   width: 100%;
   height: 97%;
   display: grid;
-  grid-template-columns: repeat(200, auto [col-start]);
-  grid-template-rows: repeat(110, auto [row-start]);
+  grid-template-columns: repeat(125, auto [col-start]);
+  grid-template-rows: repeat(60, auto [row-start]);
+}
+
+.point-container {
+  height: 100%;
+  background-color: whitesmoke;
+  border: 1px solid gray;
+  transition: background-color 0.2s ease-in;
+
+  &.checked {
+    @for $i from 1 through 6 {
+      &-#{$i} {
+        background-color: lighten(darkred, 70% - $i * 10);
+      }
+    }
+  }
 }
