@@ -14,8 +14,17 @@
 
   &.checked {
     @for $i from 1 through 6 {
+      @keyframes onPointCheck-#{$i} {
+        0%    { box-shadow: 0 0 0px darken(skyblue, $i * 10); }
+        50%   { box-shadow: 0 0 5px darken(skyblue, $i * 10); }
+        100%  { box-shadow: 0 0 0px darken(skyblue, $i * 10); }
+      }
+
       &-#{$i} {
         background-color: lighten(darkred, 70% - $i * 10);
+        animation-name: onPointCheck-#{$i};
+        animation-duration: 0.4s;
+        animation-timing-function: ease;
       }
     }
   }

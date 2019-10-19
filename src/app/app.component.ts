@@ -12,7 +12,7 @@ export class AppComponent {
   readonly gridSizeY = 60;
   readonly gridRangeX = [...Array(this.gridSizeX).keys()];
   readonly gridRangeY = [...Array(this.gridSizeY).keys()];
-  readonly speed = 100;
+  readonly speed = 5;
 
   pointsValues: Array<Array<number>> = this.gridRangeX.map(() => this.gridRangeY.map(() => 0));
 
