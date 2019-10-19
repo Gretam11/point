@@ -1,0 +1,10 @@
+.point-container {
+  height: 100%;
+  background-color: whitesmoke;
+  border: 1px solid black;
+  transition: background-color 0.5s ease-in;
+
+  &.checked {
+    background-color: yellowgreen;
+  }
+}
