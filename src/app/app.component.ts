@@ -9,8 +9,8 @@ import { PointCoordinates } from './models';
 })
 export class AppComponent {
   readonly Array = Array;
-  readonly gridSizeX = 125;
-  readonly gridSizeY = 60;
+  readonly gridSizeX = 200;
+  readonly gridSizeY = 110;
 
   pointsCheckFlags: Array<Array<boolean>> = [
     ...Array(this.gridSizeX).keys(),
@@ -21,6 +21,12 @@ export class AppComponent {
   }
 
   onPointClicked({ x, y }: PointCoordinates) {
-    this.pointsCheckFlags[x][y] = !this.pointsCheckFlags[x][y];
+    for (let i = 0; i < this.gridSizeX; i++) {
+      this.pointsCheckFlags[i][y] = true;
+    }
+
+    for (let i = 0; i < this.gridSizeY; i++) {
+      this.pointsCheckFlags[x][i] = true;
+    }
   }
 }
