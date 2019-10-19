@@ -1,7 +1,7 @@
 .point-container {
   height: 100%;
   background-color: whitesmoke;
-  border: 1px solid black;
+  border: 1px solid gray;
   transition: background-color 0.2s ease-in;
 
   &.checked {

@@ -11,6 +11,7 @@ export class AppComponent {
   readonly Array = Array;
   readonly gridSizeX = 200;
   readonly gridSizeY = 110;
+  readonly speed = 10;
 
   pointsCheckFlags: Array<Array<boolean>> = [
     ...Array(this.gridSizeX).keys(),
@@ -21,12 +22,13 @@ export class AppComponent {
   }
 
   onPointClicked({ x, y }: PointCoordinates) {
-    for (let i = 0; i < this.gridSizeX; i++) {
-      this.pointsCheckFlags[i][y] = true;
-    }
-
-    for (let i = 0; i < this.gridSizeY; i++) {
-      this.pointsCheckFlags[x][i] = true;
-    }
+    let i = 0;
+    let j = 0;
+    const timer = setInterval(() => {
+      if (i < this.gridSizeX) { this.pointsCheckFlags[i][y] = true; }
+      if (j < this.gridSizeY) { this.pointsCheckFlags[x][j] = true; }
+      i++; j++;
+      if (i >= this.gridSizeX && j >= this.gridSizeY) { clearInterval(timer); }
+    }, this.speed);
   }
 }
