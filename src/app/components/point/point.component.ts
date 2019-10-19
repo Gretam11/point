@@ -1,4 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { PointCoordinates } from 'src/app/models';
 
 @Component({
   selector: 'app-point',
@@ -7,6 +8,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PointComponent {
-  @Input() coordinates: { x: number, y: number };
+  @Input() coordinates: PointCoordinates;
   @Input() checked: boolean;
+  @Output() clicked = new EventEmitter<PointCoordinates>();
+
+  onClick() {
+    this.clicked.emit(this.coordinates);
+  }
 }

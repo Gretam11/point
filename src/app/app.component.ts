@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { PointCoordinates } from './models';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +18,9 @@ export class AppComponent {
 
   trackByFn(index, item) {
     return index;
+  }
+
+  onPointClicked({ x, y }: PointCoordinates) {
+    this.pointsCheckFlags[x][y] = !this.pointsCheckFlags[x][y];
   }
 }
