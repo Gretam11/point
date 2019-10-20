@@ -1,4 +1,6 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 
 import { SettingsService } from './services';
@@ -14,7 +16,15 @@ export class AppComponent implements OnInit {
   gridSettings$: Observable<GridSettings>;
   paintSettings$: Observable<PaintSettings>;
 
-  constructor(private readonly settingsService: SettingsService) { }
+  constructor(
+    private readonly settingsService: SettingsService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+  ) {
+    iconRegistry.addSvgIcon(
+      'github',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg'));
+  }
 
   ngOnInit() {
     this.gridSettings$ = this.settingsService.gridSettings$;
