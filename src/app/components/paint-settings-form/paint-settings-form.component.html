@@ -1,7 +1,9 @@
 <div [formGroup]="form">
   <div class="mx-2 d-inline-flex flex-column align-bottom" style="width:200px">
     <div class="small text-muted">Step pause time (ms):</div>
-    <mat-slider class="w-100" max="2000" min="0" step="1" thumbLabel="true" formControlName="stepPauseTime">
+    <mat-slider class="w-100" max="2000" min="0" step="1" thumbLabel="true" formControlName="stepPauseTime"
+      (input)="onStepPauseChange($event)">
+      <!-- manually listen to (input) to change value on every move -->
     </mat-slider>
   </div>
 

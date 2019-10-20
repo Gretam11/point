@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { MatSliderChange } from '@angular/material/slider';
 import { FormBuilder } from 'ngx-strongly-typed-forms';
 import { distinctUntilChanged, tap, filter } from 'rxjs/operators';
 import isEqual from 'lodash/isEqual';
@@ -39,5 +40,9 @@ export class PaintSettingsFormComponent implements OnChanges, OnInit {
     if (changes.value) {
       this.form.patchValue(this.value);
     }
+  }
+
+  onStepPauseChange(event: MatSliderChange) {
+    this.form.controls.stepPauseTime.setValue(event.value);
   }
 }
