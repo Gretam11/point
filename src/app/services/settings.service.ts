@@ -3,36 +3,67 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, distinctUntilChanged } from 'rxjs/operators';
 
-import { Settings, defaultSettings, AvailableGridEngine } from 'app/models';
+import { AvailableGridEngine, GridSettings, PaintSettings, defaultGridSettings, defaultPaintSettings } from 'app/models';
 import { appRoutesNames } from 'app/app.routes.names';
+
+interface SettingsState {
+  grid: GridSettings;
+  paint: PaintSettings;
+}
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
-  private readonly state = new BehaviorSubject<Settings>(defaultSettings);
+  private readonly state = new BehaviorSubject<SettingsState>({
+    grid: defaultGridSettings,
+    paint: defaultPaintSettings,
+  });
 
   private readonly engineRouteMap: { [key in AvailableGridEngine]: string } = {
     [AvailableGridEngine.angular]: appRoutesNames.angularEngineGrid,
     [AvailableGridEngine.custom]: appRoutesNames.customEngineGrid,
   };
 
-  private readonly engineChangeEffect = this.value$.pipe(
+  private readonly gridEngineChangeEffect = this.gridSettings$.pipe(
     map((value) => value.engine),
     distinctUntilChanged(),
     tap((engine) => this.router.navigate([this.engineRouteMap[engine]])),
   );
 
-  get value$(): Observable<Settings> {
-    return this.state.asObservable();
+  get gridSettings$(): Observable<GridSettings> {
+    return this.state.pipe(
+      distinctUntilChanged(),
+      map((state) => state.grid),
+    );
+  }
+
+  get paintSettings$(): Observable<PaintSettings> {
+    return this.state.pipe(
+      distinctUntilChanged(),
+      map((state) => state.paint),
+    );
   }
 
   constructor(private readonly router: Router) {
-    this.engineChangeEffect.subscribe();
+    this.gridEngineChangeEffect.subscribe();
   }
 
-  update(value: Partial<Settings>) {
+  updateGridSettings(value: Partial<GridSettings>) {
     this.state.next({
       ...this.state.value,
-      ...value,
+      grid: {
+        ...this.state.value.grid,
+        ...value,
+      },
+    });
+  }
+
+  updatePaintSettings(value: Partial<PaintSettings>) {
+    this.state.next({
+      ...this.state.value,
+      paint: {
+        ...this.state.value.paint,
+        ...value,
+      },
     });
   }
 }

@@ -1,10 +1,11 @@
 import { Observer } from 'rxjs';
-import { PointCoordinates, Settings } from 'app/models';
+import { PointCoordinates, PaintSettings, GridSettings } from 'app/models';
 
 export async function spreadPaintDiamondsMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
-  { gridSizeX, gridSizeY, stepPauseTime: spreadingSpeed }: Settings,
+  { gridSizeX, gridSizeY }: GridSettings,
+  { stepPauseTime: spreadingSpeed }: PaintSettings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;
@@ -34,7 +35,8 @@ export async function spreadPaintDiamondsMutably(
 export async function spreadPaintLinesMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
-  { gridSizeX, gridSizeY, stepPauseTime: spreadingSpeed }: Settings,
+  { gridSizeX, gridSizeY }: GridSettings,
+  { stepPauseTime: spreadingSpeed }: PaintSettings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;

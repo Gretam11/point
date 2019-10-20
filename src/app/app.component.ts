@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { SettingsService } from './services';
-import { Settings } from './models';
+import { GridSettings, PaintSettings } from './models';
 
 @Component({
   selector: 'app-root',
@@ -11,15 +11,21 @@ import { Settings } from './models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  settings$: Observable<Settings>;
+  gridSettings$: Observable<GridSettings>;
+  paintSettings$: Observable<PaintSettings>;
 
   constructor(private readonly settingsService: SettingsService) { }
 
   ngOnInit() {
-    this.settings$ = this.settingsService.value$;
+    this.gridSettings$ = this.settingsService.gridSettings$;
+    this.paintSettings$ = this.settingsService.paintSettings$;
   }
 
-  onSettingsApplied(settings: Settings) {
-    this.settingsService.update(settings);
+  onGridSettingsApplied(settings: GridSettings) {
+    this.settingsService.updateGridSettings(settings);
+  }
+
+  onPaintSettingsChanged(settings: PaintSettings) {
+    this.settingsService.updatePaintSettings(settings);
   }
 }

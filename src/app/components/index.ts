@@ -1,7 +1,10 @@
-import { SettingsFormComponent } from './settings-form/settings-form.component';
+import { GridSettingsFormComponent } from './grid-settings-form/grid-settings-form.component';
+import { PaintSettingsFormComponent } from './paint-settings-form/paint-settings-form.component';
 
 export const components = [
-  SettingsFormComponent,
+  GridSettingsFormComponent,
+  PaintSettingsFormComponent,
 ];
 
-export { SettingsFormComponent } from './settings-form/settings-form.component';
+export * from './grid-settings-form/grid-settings-form.component';
+export * from './paint-settings-form/paint-settings-form.component';

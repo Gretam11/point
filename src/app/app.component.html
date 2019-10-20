@@ -1,7 +1,15 @@
 <div class="h-100 d-flex flex-column pt-2">
-  <div>
-    <app-settings-form [value]="settings$ | async" (applied)="onSettingsApplied($event)">
-    </app-settings-form>
+  <div class="d-flex justify-content-between">
+    <div class="d-flex flex-column">
+      <span class="text-muted font-weight-bold small mx-2 mb-2">Grid settings:</span>
+      <app-grid-settings-form [value]="gridSettings$ | async" (applied)="onGridSettingsApplied($event)">
+      </app-grid-settings-form>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-muted font-weight-bold small mx-2 mb-2">Paint settings:</span>
+      <app-paint-settings-form [value]="paintSettings$ | async" (changed)="onPaintSettingsChanged($event)">
+      </app-paint-settings-form>
+    </div>
   </div>
   <div class="flex-fill">
     <router-outlet></router-outlet>

@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap, distinctUntilChanged, withLatestFrom, mergeMap } from 'rxjs/operators';
 import isEqual from 'lodash/isEqual';
 
-import { PointCoordinates, Settings, AvailableSpreadingFunction } from 'app/models';
+import { PointCoordinates, GridSettings, AvailableSpreadingFunction, PaintSettings } from 'app/models';
 import { SettingsService } from './settings.service';
 import { SpreadPaintUtils } from 'app/utils';
 
@@ -24,12 +24,13 @@ export class GridService {
   );
 
   private readonly spreadPaintMutablyEffect = this.spreadPaintMutablySubject.pipe(
-    withLatestFrom(this.gridValues$, this.settingsService.value$),
-    mergeMap(([startPoint, gridValues, settings]) => this.spreadPaintMutably$(startPoint, gridValues, settings)),
+    withLatestFrom(this.gridValues$, this.settingsService.gridSettings$, this.settingsService.paintSettings$),
+    mergeMap(([startPoint, gridValues, gridSettings, paintSettings]) =>
+      this.spreadPaintMutably$(startPoint, gridValues, gridSettings, paintSettings)),
     tap((mutatedState) => this.state.next(mutatedState)),
   );
 
-  private readonly settingsChangeEffect = this.settingsService.value$.pipe(
+  private readonly settingsChangeEffect = this.settingsService.gridSettings$.pipe(
     map((value) => ({ sizeX: value.gridSizeX, sizeY: value.gridSizeY })),
     distinctUntilChanged(isEqual),
     tap(() => this.clearImmutablySubject.next()),
@@ -40,7 +41,7 @@ export class GridService {
   }
 
   get gridKeysX$(): Observable<number[]> {
-    return this.settingsService.value$.pipe(
+    return this.settingsService.gridSettings$.pipe(
       map(({ gridSizeX }) => gridSizeX),
       distinctUntilChanged(),
       map((sizeX) => [...Array(sizeX).keys()]),
@@ -48,7 +49,7 @@ export class GridService {
   }
 
   get gridKeysY$(): Observable<number[]> {
-    return this.settingsService.value$.pipe(
+    return this.settingsService.gridSettings$.pipe(
       map(({ gridSizeY }) => gridSizeY),
       distinctUntilChanged(),
       map((sizeY) => [...Array(sizeY).keys()]),
@@ -77,10 +78,11 @@ export class GridService {
   private spreadPaintMutably$(
     startPoint: PointCoordinates,
     gridValues: Array<Array<number>>,
-    settings: Settings,
+    gridSettings: GridSettings,
+    paintSettings: PaintSettings,
   ): Observable<Array<Array<number>>> {
     return new Observable((observer) => {
-      this.spreadPaintFunctionsMap[settings.spreadingFn](startPoint, gridValues, settings, observer);
+      this.spreadPaintFunctionsMap[paintSettings.spreadingFn](startPoint, gridValues, gridSettings, paintSettings, observer);
     });
   }
 }

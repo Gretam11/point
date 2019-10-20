@@ -3,38 +3,27 @@ import { Validators } from '@angular/forms';
 import { FormBuilder } from 'ngx-strongly-typed-forms';
 import isEqual from 'lodash/isEqual';
 
-import { Settings, AvailableGridEngine, AvailableSpreadingFunction, defaultSettings } from 'app/models';
+import { GridSettings, AvailableGridEngine } from 'app/models';
 
 @Component({
-  selector: 'app-settings-form',
-  templateUrl: './settings-form.component.html',
+  selector: 'app-grid-settings-form',
+  templateUrl: './grid-settings-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingsFormComponent implements OnChanges {
+export class GridSettingsFormComponent implements OnChanges {
   readonly engineOptions: AvailableGridEngine[] = [
     AvailableGridEngine.angular,
     AvailableGridEngine.custom,
   ];
 
-  readonly spreadingFnOptions: AvailableSpreadingFunction[] = [
-    AvailableSpreadingFunction.lines,
-    AvailableSpreadingFunction.diamonds,
-  ];
-
-  readonly form = this.fb.group<Settings>({
+  readonly form = this.fb.group<GridSettings>({
     engine: [null, [Validators.required]],
     gridSizeX: [null, [Validators.required, Validators.min(1), Validators.pattern(/\d+/)]],
     gridSizeY: [null, [Validators.required, Validators.min(1), Validators.pattern(/\d+/)]],
-    stepPauseTime: [null, [Validators.required]],
-    spreadingFn: [null, [Validators.required]],
   });
 
-  @Input() value: Settings;
-  @Output() applied = new EventEmitter<Settings>();
-
-  get isFormValueDefault(): boolean {
-    return !isEqual(this.form.value, defaultSettings);
-  }
+  @Input() value: GridSettings;
+  @Output() applied = new EventEmitter<GridSettings>();
 
   get isFormValueChanged(): boolean {
     return !isEqual(this.form.value, this.value);
@@ -46,10 +35,6 @@ export class SettingsFormComponent implements OnChanges {
     if (changes.value) {
       this.form.patchValue(this.value);
     }
-  }
-
-  onResetClick() {
-    this.form.setValue(defaultSettings);
   }
 
   onApplyClick() {
