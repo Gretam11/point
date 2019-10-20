@@ -1,0 +1,36 @@
+<div [formGroup]="form">
+  <mat-form-field class="mx-2" style="width:200px">
+    <mat-label>Grid rendering engine:</mat-label>
+    <mat-select formControlName="engine">
+      <mat-option *ngFor="let option of engineOptions" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="mx-2" style="width:100px">
+    <input matInput placeholder="Grid Size X" type="number" min="1" formControlName="gridSizeX">
+  </mat-form-field>
+
+  <mat-form-field class="mx-2" style="width:100px">
+    <input matInput placeholder="Grid Size Y" type="number" min="1" formControlName="gridSizeY">
+  </mat-form-field>
+
+  <div class="mx-2 d-inline-flex flex-column align-bottom" style="width:200px">
+    <div class="small text-muted">Spreading speed (ms):</div>
+    <mat-slider class="w-100" max="2000" min="0" step="1" thumbLabel="true" formControlName="spreadingSpeed">
+    </mat-slider>
+  </div>
+
+  <mat-form-field class="mx-2" style="width:200px">
+    <mat-label>Spreading function:</mat-label>
+    <mat-select formControlName="spreadingFn">
+      <mat-option *ngFor="let option of spreadingFnOptions" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button [disabled]="form.invalid || !isValueChanged" (click)="onApplyClick()">Apply</button>
+  <button mat-button [disabled]="!isValueChanged" (click)="onResetClick()">Reset</button>
+</div>

@@ -1,4 +1,4 @@
-<table class="grid-container bg-light" cellpadding="0" cellpadding="0">
+<table class="bg-light w-100 h-100" cellpadding="0" cellpadding="0">
   <tr *ngFor="let y of gridRangeY; trackBy: trackByFn;">
     <td *ngFor="let x of gridRangeX; trackBy: trackByFn;">
       <div class="point-container h-100 border border-secondary" [ngClass]="'checked-'+(pointsValues[x][y] % 7)"

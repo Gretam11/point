@@ -5,6 +5,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 import { components } from './components';
 import { containers } from './containers';
@@ -23,6 +26,9 @@ import { routes } from './app.routes';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSliderModule,
+    MatSelectModule,
+    MatButtonModule,
     RouterModule.forRoot(routes),
   ],
   bootstrap: [AppComponent]
