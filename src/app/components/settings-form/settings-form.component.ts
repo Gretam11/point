@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder } from 'ngx-strongly-typed-forms';
 import isEqual from 'lodash/isEqual';
@@ -10,7 +10,7 @@ import { Settings, AvailableGridEngine, AvailableSpreadingFunction, defaultSetti
   templateUrl: './settings-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SettingsFormComponent implements OnInit {
+export class SettingsFormComponent implements OnChanges {
   readonly engineOptions: AvailableGridEngine[] = [
     AvailableGridEngine.angular,
     AvailableGridEngine.custom,
@@ -29,17 +29,23 @@ export class SettingsFormComponent implements OnInit {
     spreadingFn: [null, [Validators.required]],
   });
 
+  @Input() value: Settings;
   @Output() applied = new EventEmitter<Settings>();
 
-
-  get isValueChanged(): boolean {
+  get isFormValueDefault(): boolean {
     return !isEqual(this.form.value, defaultSettings);
+  }
+
+  get isFormValueChanged(): boolean {
+    return !isEqual(this.form.value, this.value);
   }
 
   constructor(private readonly fb: FormBuilder) { }
 
-  ngOnInit() {
-    this.form.setValue(defaultSettings);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.value) {
+      this.form.patchValue(this.value);
+    }
   }
 
   onResetClick() {

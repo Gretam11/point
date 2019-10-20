@@ -1,6 +1,7 @@
 <div class="h-100 d-flex flex-column pt-2">
   <div>
-    <app-settings-form></app-settings-form>
+    <app-settings-form [value]="settings$ | async" (applied)="onSettingsApplied($event)">
+    </app-settings-form>
   </div>
   <div class="flex-fill">
     <router-outlet></router-outlet>

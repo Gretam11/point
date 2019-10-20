@@ -31,6 +31,6 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-button [disabled]="form.invalid || !isValueChanged" (click)="onApplyClick()">Apply</button>
-  <button mat-button [disabled]="!isValueChanged" (click)="onResetClick()">Reset</button>
+  <button mat-button [disabled]="form.invalid || !isFormValueChanged" (click)="onApplyClick()">Apply</button>
+  <button mat-button [disabled]="!isFormValueDefault" (click)="onResetClick()">Reset</button>
 </div>
