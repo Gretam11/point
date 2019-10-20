@@ -1,18 +1,9 @@
-<!-- <div class="grid-container">
-  <ng-container *ngFor="let y of Array(gridSizeY).keys(); trackBy: trackByFn;">
-    <ng-container *ngFor="let x of Array(gridSizeX).keys(); trackBy: trackByFn;">
-      <app-point [coordinates]="{x: x, y: y}" [checked]="pointsValues[x][y]" (clicked)="onPointClicked($event)">
-      </app-point>
-    </ng-container>
-  </ng-container>
-</div> -->
-
-<div class="grid-container">
-  <ng-container *ngFor="let y of gridRangeY; trackBy: trackByFn;">
-    <ng-container *ngFor="let x of gridRangeX; trackBy: trackByFn;">
+<table class="grid-container" cellpadding="0" cellpadding="0">
+  <tr *ngFor="let y of gridRangeY; trackBy: trackByFn;">
+    <td *ngFor="let x of gridRangeX; trackBy: trackByFn;">
       <div class="point-container" [ngClass]="'checked-'+(pointsValues[x][y] % 7)"
-        (click)="spreadPaintLines({ x: x, y: y})" (contextmenu)="spreadPaintSquare({ x: x, y: y})">
+        (click)="spreadPaintLines({ x: x, y: y })" (contextmenu)="spreadPaintSquare({ x: x, y: y})">
       </div>
-    </ng-container>
-  </ng-container>
-</div>
+    </td>
+  </tr>
+</table>
