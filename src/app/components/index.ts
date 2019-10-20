@@ -1,7 +1,7 @@
-import { PointComponent } from './point/point.component';
+import { SettingsFormComponent } from './settings-form/settings-form.component';
 
 export const components = [
-  PointComponent,
+  SettingsFormComponent,
 ];
 
-export { PointComponent } from './point/point.component';
+export { SettingsFormComponent } from './settings-form/settings-form.component';
