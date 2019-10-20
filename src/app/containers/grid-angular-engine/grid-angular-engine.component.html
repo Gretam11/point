@@ -1,9 +1,17 @@
-<table class="bg-light w-100 h-100" cellpadding="0" cellpadding="0">
-  <tr *ngFor="let y of gridRangeY; trackBy: trackByFn;">
-    <td *ngFor="let x of gridRangeX; trackBy: trackByFn;" class="border border-secondary">
-      <div class="point-container h-100" [ngClass]="'checked-'+(pointsValues[x][y] % 7)"
-        (click)="spreadPaintLines({ x: x, y: y })" (contextmenu)="spreadPaintSquare({ x: x, y: y})">
-      </div>
-    </td>
-  </tr>
-</table>
+<ng-container *ngIf="gridValues$ | async as gridValues">
+  <ng-container *ngIf="gridKeysY$ | async as gridKeysY">
+    <ng-container *ngIf="gridKeysX$ | async as gridKeysX">
+
+      <table class="bg-light w-100 h-100" cellpadding="0" cellpadding="0">
+        <tr *ngFor="let y of gridKeysY; trackBy: trackByFn;">
+          <td *ngFor="let x of gridKeysX; trackBy: trackByFn;" class="border border-secondary">
+            <div class="point-container h-100" [ngClass]="'checked-'+(gridValues[x][y] % 7)"
+              (click)="onPointClick({ x: x, y: y })">
+            </div>
+          </td>
+        </tr>
+      </table>
+
+    </ng-container>
+  </ng-container>
+</ng-container>

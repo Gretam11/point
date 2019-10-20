@@ -13,7 +13,7 @@ export enum AvailableGridEngine {
 
 export enum AvailableSpreadingFunction {
   lines = 'Lines',
-  diamond = 'Diamonds',
+  diamonds = 'Diamonds',
 }
 
 export const defaultSettings: Settings = {

@@ -18,7 +18,7 @@ export class SettingsFormComponent implements OnChanges {
 
   readonly spreadingFnOptions: AvailableSpreadingFunction[] = [
     AvailableSpreadingFunction.lines,
-    AvailableSpreadingFunction.diamond,
+    AvailableSpreadingFunction.diamonds,
   ];
 
   readonly form = this.fb.group<Settings>({
