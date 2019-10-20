@@ -6,7 +6,7 @@
         <tr *ngFor="let y of gridKeysY; trackBy: trackByFn;">
           <td *ngFor="let x of gridKeysX; trackBy: trackByFn;" class="border border-secondary">
             <div class="point-container h-100" [ngClass]="'checked-'+(gridValues[x][y] % 7)"
-              (click)="onPointClick({ x: x, y: y })">
+              (mousedown)="onPointClick({ x: x, y: y })">
             </div>
           </td>
         </tr>

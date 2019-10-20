@@ -2,7 +2,7 @@ export interface Settings {
   engine: AvailableGridEngine;
   gridSizeX: number;
   gridSizeY: number;
-  spreadingSpeed: number;
+  stepPauseTime: number;
   spreadingFn: AvailableSpreadingFunction;
 }
 
@@ -20,6 +20,6 @@ export const defaultSettings: Settings = {
   engine: AvailableGridEngine.angular,
   gridSizeX: 60,
   gridSizeY: 30,
-  spreadingSpeed: 50,
+  stepPauseTime: 50,
   spreadingFn: AvailableSpreadingFunction.lines,
 };

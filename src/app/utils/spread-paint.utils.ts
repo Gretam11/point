@@ -4,11 +4,11 @@ import { PointCoordinates, Settings } from 'app/models';
 export async function spreadPaintDiamondsMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
-  { gridSizeX, gridSizeY, spreadingSpeed }: Settings,
+  { gridSizeX, gridSizeY, stepPauseTime: spreadingSpeed }: Settings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;
-  for (let i = 1; i < Math.max(gridSizeX, gridSizeY) ** 2; i++) {
+  for (let i = 1; i < Math.max(gridSizeX, gridSizeY); i++) {
     for (let j = 0; j <= i; j++) {
       const topY = y - i + j;
       const botY = y + i - j;
@@ -34,7 +34,7 @@ export async function spreadPaintDiamondsMutably(
 export async function spreadPaintLinesMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
-  { gridSizeX, gridSizeY, spreadingSpeed }: Settings,
+  { gridSizeX, gridSizeY, stepPauseTime: spreadingSpeed }: Settings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;

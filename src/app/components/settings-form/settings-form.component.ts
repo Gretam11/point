@@ -25,7 +25,7 @@ export class SettingsFormComponent implements OnChanges {
     engine: [null, [Validators.required]],
     gridSizeX: [null, [Validators.required, Validators.min(1), Validators.pattern(/\d+/)]],
     gridSizeY: [null, [Validators.required, Validators.min(1), Validators.pattern(/\d+/)]],
-    spreadingSpeed: [null, [Validators.required]],
+    stepPauseTime: [null, [Validators.required]],
     spreadingFn: [null, [Validators.required]],
   });
 
