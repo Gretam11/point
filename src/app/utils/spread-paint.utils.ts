@@ -1,15 +1,17 @@
 import { Observer } from 'rxjs';
-import { PointCoordinates, PaintSettings, GridSettings } from 'app/models';
+import { PointCoordinates, GridSettings } from 'app/models';
+
+// singleton object that sets time for pause between iterations for all algorithms
+export const stepPauseTime = { value: 0 };
 
 export async function spreadPaintDiamondsMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
   { gridSizeX, gridSizeY }: GridSettings,
-  { stepPauseTime: spreadingSpeed }: PaintSettings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;
-  for (let i = 1; i < Math.max(gridSizeX, gridSizeY); i++) {
+  for (let i = 1; i < Math.max(gridSizeX, gridSizeY) * 2; i++) {
     for (let j = 0; j <= i; j++) {
       const topY = y - i + j;
       const botY = y + i - j;
@@ -26,7 +28,7 @@ export async function spreadPaintDiamondsMutably(
         if (leftX >= 0 && leftX !== rightX) { gridValues[leftX][botY]++; }
       }
     }
-    await skipTime(spreadingSpeed);
+    await skipTime(stepPauseTime.value);
     observer.next(gridValues);
   }
   observer.complete();
@@ -36,7 +38,6 @@ export async function spreadPaintLinesMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
   { gridSizeX, gridSizeY }: GridSettings,
-  { stepPauseTime: spreadingSpeed }: PaintSettings,
   observer: Observer<Array<Array<number>>>,
 ) {
   gridValues[x][y]++;
@@ -52,7 +53,7 @@ export async function spreadPaintLinesMutably(
     if (topY >= 0) { gridValues[x][topY]++; }
     if (botY < gridSizeY) { gridValues[x][botY]++; }
 
-    await skipTime(spreadingSpeed);
+    await skipTime(stepPauseTime.value);
     observer.next(gridValues);
   }
   observer.complete();

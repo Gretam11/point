@@ -4,8 +4,8 @@ import { map, tap, distinctUntilChanged, withLatestFrom, mergeMap } from 'rxjs/o
 import isEqual from 'lodash/isEqual';
 
 import { PointCoordinates, GridSettings, AvailableSpreadingFunction, PaintSettings } from 'app/models';
-import { SettingsService } from './settings.service';
 import { SpreadPaintUtils } from 'app/utils';
+import { SettingsService } from './settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class GridService {
@@ -30,10 +30,16 @@ export class GridService {
     tap((mutatedState) => this.state.next(mutatedState)),
   );
 
-  private readonly settingsChangeEffect = this.settingsService.gridSettings$.pipe(
+  private readonly gridSettingsChangeEffect = this.settingsService.gridSettings$.pipe(
     map((value) => ({ sizeX: value.gridSizeX, sizeY: value.gridSizeY })),
     distinctUntilChanged(isEqual),
     tap(() => this.clearImmutablySubject.next()),
+  );
+
+  private readonly paintSettingsChangeEffect = this.settingsService.paintSettings$.pipe(
+    map((value) => value.stepPauseTime),
+    distinctUntilChanged(),
+    tap((pauseTime) => SpreadPaintUtils.stepPauseTime.value = pauseTime),
   );
 
   get gridValues$(): Observable<Array<Array<number>>> {
@@ -59,7 +65,8 @@ export class GridService {
   constructor(private readonly settingsService: SettingsService) {
     this.clearImmutablyEffect.subscribe();
     this.spreadPaintMutablyEffect.subscribe();
-    this.settingsChangeEffect.subscribe();
+    this.gridSettingsChangeEffect.subscribe();
+    this.paintSettingsChangeEffect.subscribe();
   }
 
   clearMutably() {
@@ -82,7 +89,7 @@ export class GridService {
     paintSettings: PaintSettings,
   ): Observable<Array<Array<number>>> {
     return new Observable((observer) => {
-      this.spreadPaintFunctionsMap[paintSettings.spreadingFn](startPoint, gridValues, gridSettings, paintSettings, observer);
+      this.spreadPaintFunctionsMap[paintSettings.spreadingFn](startPoint, gridValues, gridSettings, observer);
     });
   }
 }
