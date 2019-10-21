@@ -11,9 +11,9 @@ import { GridSettings, AvailableGridEngine } from 'app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GridSettingsFormComponent implements OnChanges {
-  readonly engineOptions: AvailableGridEngine[] = [
-    AvailableGridEngine.angular,
-    AvailableGridEngine.custom,
+  readonly engineOptions: Array<{ value: AvailableGridEngine, disabled: boolean }> = [
+    { value: AvailableGridEngine.angular, disabled: false },
+    { value: AvailableGridEngine.custom, disabled: true },
   ];
 
   readonly form = this.fb.group<GridSettings>({

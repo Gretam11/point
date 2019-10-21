@@ -2,8 +2,8 @@
   <mat-form-field class="mx-2" style="width:200px">
     <mat-label>Grid rendering engine:</mat-label>
     <mat-select formControlName="engine">
-      <mat-option *ngFor="let option of engineOptions" [value]="option">
-        {{option}}
+      <mat-option *ngFor="let option of engineOptions" [value]="option.value" [disabled]="option.disabled">
+        {{option.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -16,5 +16,6 @@
     <input matInput placeholder="Grid Size Y" type="number" min="1" formControlName="gridSizeY">
   </mat-form-field>
 
-  <button mat-button type="submit" [disabled]="form.invalid || !isFormValueChanged" (click)="onApplyClick()">Apply</button>
+  <button mat-button type="submit" [disabled]="form.invalid || !isFormValueChanged"
+    (click)="onApplyClick()">Apply</button>
 </form>
