@@ -21,6 +21,7 @@ export class PaintSettingsFormComponent implements OnChanges, OnInit {
   readonly form = this.fb.group<PaintSettings>({
     stepPauseTime: [null, [Validators.required]],
     spreadingFn: [null, [Validators.required]],
+    isCssAnimationsActive: [null],
   });
 
   @Input() value: PaintSettings;

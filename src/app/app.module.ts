@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 
 import { components } from './components';
@@ -33,6 +34,7 @@ import { routes } from './app.routes';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatCheckboxModule,
     RouterModule.forRoot(routes),
   ],
   bootstrap: [AppComponent]

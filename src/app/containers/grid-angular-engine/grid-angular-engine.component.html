@@ -1,15 +1,18 @@
 <ng-container *ngIf="gridValues$ | async as gridValues">
   <ng-container *ngIf="gridKeysY$ | async as gridKeysY">
     <ng-container *ngIf="gridKeysX$ | async as gridKeysX">
+      <ng-container *ngIf="paintSettings$ | async as paintSettings">
 
-      <table class="bg-light w-100 h-100" cellpadding="0" cellpadding="0">
-        <tr *ngFor="let y of gridKeysY; trackBy: trackByFn;">
-          <td *ngFor="let x of gridKeysX; trackBy: trackByFn;" class="border border-secondary point-container"
-            [ngClass]="'checked-'+(gridValues[x][y] % 7)" (mousedown)="onPointClick({ x: x, y: y })">
-          </td>
-        </tr>
-      </table>
+        <table class="bg-light w-100 h-100" cellpadding="0" cellpadding="0">
+          <tr *ngFor="let y of gridKeysY; trackBy: trackByFn;">
+            <td *ngFor="let x of gridKeysX; trackBy: trackByFn;" class="border border-secondary point-container"
+              [ngClass]="'checked-'+(gridValues[x][y] % 7)" [class.css-animate]="paintSettings.isCssAnimationsActive"
+              (mousedown)="onPointClick({ x: x, y: y })">
+            </td>
+          </tr>
+        </table>
 
+      </ng-container>
     </ng-container>
   </ng-container>
 </ng-container>

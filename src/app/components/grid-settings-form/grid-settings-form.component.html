@@ -1,4 +1,4 @@
-<div [formGroup]="form">
+<form [formGroup]="form">
   <mat-form-field class="mx-2" style="width:200px">
     <mat-label>Grid rendering engine:</mat-label>
     <mat-select formControlName="engine">
@@ -16,5 +16,5 @@
     <input matInput placeholder="Grid Size Y" type="number" min="1" formControlName="gridSizeY">
   </mat-form-field>
 
-  <button mat-button [disabled]="form.invalid || !isFormValueChanged" (click)="onApplyClick()">Apply</button>
-</div>
+  <button mat-button type="submit" [disabled]="form.invalid || !isFormValueChanged" (click)="onApplyClick()">Apply</button>
+</form>
