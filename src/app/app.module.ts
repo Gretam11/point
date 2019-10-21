@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { components } from './components';
+import { components, HelpDialogComponent } from './components';
 import { containers } from './containers';
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
@@ -38,6 +38,7 @@ import { registerAppFaIcons } from './app.fontawesome.icons';
     MatDialogModule,
     RouterModule.forRoot(routes),
   ],
+  entryComponents: [HelpDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

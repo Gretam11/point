@@ -1,0 +1,46 @@
+<div style="width: 550px">
+  <h5 class="font-weight-bold">Grid for paint</h5>
+  <div class="mt-3 font-weight-bold">Grid</div>
+  <div style="font-size: 0.9rem">
+    This grid is implemented as an html table.
+    It shows paint spread by means of different functions.
+    You can start paint reaction just by clicking on any cell.
+    You can clear the grid with <mark><small>ESC</small></mark> button.
+  </div>
+  <div class="mt-2 font-weight-bold">Grid settings</div>
+  <div style="font-size: 0.9rem">
+    Grid settings update requires grid reload.
+    <br />
+    <span style="font-weight: 500">Angular Grid Engine</span> - renders grid using angular framework's
+    <mark><small>NgForOf</small></mark> structural directive with
+    <mark><small>NgClass</small></mark> directive for every table cell.
+    It also relies on angular bindings and change detection mechanism.
+    <br />
+    <span style="font-weight: 500">Custom Grid Engine</span> - renders grid using almost
+    native <mark><small>JS</small></mark> dom api (via <mark><small>Renderer</small></mark>)
+    to create, remove and update dom elements according to changes in JS object model.
+  </div>
+  <div class="mt-2 font-weight-bold">Paint settings</div>
+  <div style="font-size: 0.9rem">
+    Paint settings may be updated in real time during paint spread.
+  </div>
+  <div class="mt-2 font-weight-bold">FPS meter</div>
+  <div style="font-size: 0.9rem">
+    FPS meter is allocated at the bottom panel.
+  </div>
+  <div class="mt-2 font-weight-bold">Purpose</div>
+  <div style="font-size: 0.9rem">
+    This project was created just for fun, so it doesn't have any specific purpose.
+  </div>
+  <div class="mt-2 font-weight-bold">Help</div>
+  <div style="font-size: 0.9rem">
+    Click
+    <fa-icon icon="info-circle" class="text-primary"></fa-icon>
+    button in order to open this dialog again.
+  </div>
+  <div class="mt-2 font-weight-bold">Have fun!</div>
+  <div class="mt-3 d-flex justify-content-between align-items-baseline">
+    <div class="text-monospace" style="font-size: 0.80rem">Made with angular framework.</div>
+    <button mat-flat-button color="primary" mat-dialog-close cdkFocusInitial>Ok</button>
+  </div>
+</div>

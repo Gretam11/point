@@ -16,8 +16,13 @@
   </div>
   <div class="m-1 m-2 d-flex justify-content-between align-items-center">
     <app-performance-meter></app-performance-meter>
-    <a href="https://github.com/Gretam11/point" class="text-dark">
-      <fa-icon [icon]="['fab', 'github']" [styles]="{'font-size': '2.5rem'}"></fa-icon>
-    </a>
+    <div class="d-flex align-items-center">
+      <a href="javascript:;" (click)="onHelpIconClick()">
+        <fa-icon icon="info-circle" class="mr-2 text-primary"></fa-icon>
+      </a>
+      <a href="https://github.com/Gretam11/point" class="text-dark">
+        <fa-icon [icon]="['fab', 'github']" [styles]="{'font-size': '2.5rem'}"></fa-icon>
+      </a>
+    </div>
   </div>
 </div>

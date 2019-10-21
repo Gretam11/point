@@ -1,10 +1,10 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ChangeDetectionStrategy, HostListener } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 
 import { SettingsService, GridService } from './services';
 import { GridSettings, PaintSettings } from './models';
+import { HelpDialogComponent } from './components';
 
 @Component({
   selector: 'app-root',
@@ -19,17 +19,13 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly settingsService: SettingsService,
     private readonly gridService: GridService,
-    iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer,
-  ) {
-    iconRegistry.addSvgIcon(
-      'github',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg'));
-  }
+    public readonly dialogService: MatDialog,
+  ) { }
 
   ngOnInit() {
     this.gridSettings$ = this.settingsService.gridSettings$;
     this.paintSettings$ = this.settingsService.paintSettings$;
+    this.dialogService.open(HelpDialogComponent);
   }
 
   onGridSettingsApplied(settings: GridSettings) {
@@ -38,6 +34,10 @@ export class AppComponent implements OnInit {
 
   onPaintSettingsChanged(settings: PaintSettings) {
     this.settingsService.updatePaintSettings(settings);
+  }
+
+  onHelpIconClick() {
+    this.dialogService.open(HelpDialogComponent);
   }
 
   @HostListener('document:keyup.escape')
