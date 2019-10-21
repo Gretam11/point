@@ -1,9 +1,9 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, HostListener } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 
-import { SettingsService } from './services';
+import { SettingsService, GridService } from './services';
 import { GridSettings, PaintSettings } from './models';
 
 @Component({
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private readonly settingsService: SettingsService,
+    private readonly gridService: GridService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
   ) {
@@ -37,5 +38,10 @@ export class AppComponent implements OnInit {
 
   onPaintSettingsChanged(settings: PaintSettings) {
     this.settingsService.updatePaintSettings(settings);
+  }
+
+  @HostListener('document:keyup.escape')
+  onEscKeyUp() {
+    this.gridService.clearMutably();
   }
 }
