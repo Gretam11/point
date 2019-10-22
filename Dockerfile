@@ -1,5 +1,5 @@
 # build stage base image
-FROM node:11.14 as build
+FROM node:12.13 as build
 
 WORKDIR  /app
 
