@@ -1,12 +1,7 @@
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 
-export const faIcons = [
+export const appFaIcons = [
   faGithub,
   faInfoCircle,
 ];
-
-export function registerAppFaIcons() {
-  library.add(...faIcons);
-}
