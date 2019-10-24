@@ -7,6 +7,7 @@ export interface PaintSettings {
 export enum AvailableSpreadingFunction {
   lines = 'Lines',
   diamonds = 'Diamonds',
+  circles = 'Circles',
 }
 
 export const defaultPaintSettings = {

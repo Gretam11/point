@@ -4,6 +4,7 @@ import { MatSliderChange } from '@angular/material/slider';
 import { FormBuilder } from 'ngx-strongly-typed-forms';
 import { distinctUntilChanged, tap, filter } from 'rxjs/operators';
 import isEqual from 'lodash/isEqual';
+import values from 'lodash/values';
 
 import { PaintSettings, AvailableSpreadingFunction } from 'app/models';
 
@@ -13,10 +14,7 @@ import { PaintSettings, AvailableSpreadingFunction } from 'app/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaintSettingsFormComponent implements OnChanges, OnInit {
-  readonly spreadingFnOptions: AvailableSpreadingFunction[] = [
-    AvailableSpreadingFunction.lines,
-    AvailableSpreadingFunction.diamonds,
-  ];
+  readonly spreadingFnOptions: AvailableSpreadingFunction[] = values(AvailableSpreadingFunction);
 
   readonly form = this.fb.group<PaintSettings>({
     stepPauseTime: [null, [Validators.required]],

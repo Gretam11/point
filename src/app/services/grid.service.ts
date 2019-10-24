@@ -12,6 +12,7 @@ export class GridService {
   private readonly spreadPaintFunctionsMap: { [key in AvailableSpreadingFunction]: typeof SpreadPaintUtils.spreadPaintDiamondsMutably } = {
     [AvailableSpreadingFunction.lines]: SpreadPaintUtils.spreadPaintLinesMutably,
     [AvailableSpreadingFunction.diamonds]: SpreadPaintUtils.spreadPaintDiamondsMutably,
+    [AvailableSpreadingFunction.circles]: SpreadPaintUtils.spreadPaintCirclesMutably,
   };
 
   private readonly state = new BehaviorSubject<Array<Array<number>>>([]);

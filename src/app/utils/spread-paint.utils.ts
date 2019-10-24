@@ -4,6 +4,36 @@ import { PointCoordinates, GridSettings } from 'app/models';
 // singleton object that sets time for pause between iterations for all algorithms
 export const stepPauseTime = { value: 0 };
 
+export async function spreadPaintCirclesMutably(
+  { x, y }: PointCoordinates,
+  gridValues: Array<Array<number>>,
+  { gridSizeX, gridSizeY }: GridSettings,
+  observer: Observer<Array<Array<number>>>,
+) {
+  const visitedPointsMap = {};
+  for (let i = 1; i < Math.max(gridSizeX, gridSizeY); i++) {
+    for (let relativeX = -i; relativeX <= i; ++relativeX) {
+      const maxRelativeY = Math.floor(Math.sqrt(i ** 2 - relativeX ** 2));
+      for (let relativeY = -maxRelativeY; relativeY <= maxRelativeY; relativeY++) {
+        if (!visitedPointsMap[`${relativeX},${relativeY}`]) {
+          const pointX = relativeX + x;
+          const pointY = relativeY + y;
+
+          if (pointX < 0 || pointX >= gridSizeX || pointY < 0 || pointY >= gridSizeY) {
+            continue;
+          }
+
+          gridValues[pointX][pointY]++;
+          visitedPointsMap[`${relativeX},${relativeY}`] = true;
+        }
+      }
+    }
+    await skipTime(stepPauseTime.value);
+    observer.next(gridValues);
+  }
+  observer.complete();
+}
+
 export async function spreadPaintDiamondsMutably(
   { x, y }: PointCoordinates,
   gridValues: Array<Array<number>>,
