@@ -42,6 +42,6 @@ export class AppComponent implements OnInit {
 
   @HostListener('document:keyup.escape')
   onEscKeyUp() {
-    this.gridService.clearMutably();
+    this.gridService.clearImmutably();
   }
 }

@@ -1,46 +1,60 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, tap, distinctUntilChanged, withLatestFrom, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { map, tap, distinctUntilChanged, withLatestFrom, mergeMap, concatMap, switchMap, refCount, publishReplay } from 'rxjs/operators';
 import isEqual from 'lodash/isEqual';
 
-import { PointCoordinates, GridSettings, AvailableSpreadingFunction, PaintSettings } from 'app/models';
+import { PointCoordinates, GridSettings, AvailableSpreadingFunction } from 'app/models';
 import { SpreadPaintUtils } from 'app/utils';
 import { SettingsService } from './settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class GridService {
-  private readonly spreadPaintFunctionsMap: { [key in AvailableSpreadingFunction]: typeof SpreadPaintUtils.spreadPaintDiamondsMutably } = {
-    [AvailableSpreadingFunction.lines]: SpreadPaintUtils.spreadPaintLinesMutably,
-    [AvailableSpreadingFunction.diamonds]: SpreadPaintUtils.spreadPaintDiamondsMutably,
-    [AvailableSpreadingFunction.circles]: SpreadPaintUtils.spreadPaintCirclesMutably,
+  private readonly spreadPaintFunctionsMap: { [key in AvailableSpreadingFunction]: typeof SpreadPaintUtils.spreadPaintLines } = {
+    [AvailableSpreadingFunction.lines]: SpreadPaintUtils.spreadPaintLines,
+    [AvailableSpreadingFunction.diamonds]: SpreadPaintUtils.spreadPaintDiamonds,
+    [AvailableSpreadingFunction.circles]: SpreadPaintUtils.spreadPaintCircles,
   };
 
   private readonly state = new BehaviorSubject<Array<Array<number>>>([]);
   private readonly clearImmutablySubject = new Subject();
   private readonly spreadPaintMutablySubject = new Subject<PointCoordinates>();
 
+  private stepPauseTime: number;
+
   private readonly clearImmutablyEffect = this.clearImmutablySubject.pipe(
     withLatestFrom(this.gridKeysX$, this.gridKeysY$),
     tap(([_, keysX, keysY]) => this.state.next(keysX.map(() => keysY.map(() => 0)))),
   );
 
-  private readonly spreadPaintMutablyEffect = this.spreadPaintMutablySubject.pipe(
-    withLatestFrom(this.gridValues$, this.settingsService.gridSettings$, this.settingsService.paintSettings$),
-    mergeMap(([startPoint, gridValues, gridSettings, paintSettings]) =>
-      this.spreadPaintMutably$(startPoint, gridValues, gridSettings, paintSettings)),
-    tap((mutatedState) => this.state.next(mutatedState)),
+  private readonly spreadPaintMutablyEffect = this.clearImmutablySubject.pipe(
+    publishReplay(),
+    refCount(),
+    // to drop all paint observables on clear event
+    switchMap(() => {
+      return this.spreadPaintMutablySubject.pipe(
+        withLatestFrom(this.settingsService.gridSettings$, this.settingsService.paintSettings$),
+        mergeMap(([startPoint, gridSettings, { spreadingFn }]) =>
+          this.spreadPaint$(startPoint, gridSettings, spreadingFn),
+        ),
+        tap((checkedPoints) => {
+          const gridValues = this.state.value;
+          checkedPoints.forEach(({ x, y }) => gridValues[x][y]++);
+          this.state.next(gridValues);
+        }),
+      );
+    }),
+  );
+
+  private readonly paintSettingsChangeEffect = this.settingsService.paintSettings$.pipe(
+    map(({ stepPauseTime }) => stepPauseTime),
+    distinctUntilChanged(),
+    tap((stepPauseTime) => this.stepPauseTime = stepPauseTime),
   );
 
   private readonly gridSettingsChangeEffect = this.settingsService.gridSettings$.pipe(
     map((value) => ({ sizeX: value.gridSizeX, sizeY: value.gridSizeY })),
     distinctUntilChanged(isEqual),
     tap(() => this.clearImmutablySubject.next()),
-  );
-
-  private readonly paintSettingsChangeEffect = this.settingsService.paintSettings$.pipe(
-    map((value) => value.stepPauseTime),
-    distinctUntilChanged(),
-    tap((pauseTime) => SpreadPaintUtils.stepPauseTime.value = pauseTime),
   );
 
   get gridValues$(): Observable<Array<Array<number>>> {
@@ -65,14 +79,9 @@ export class GridService {
 
   constructor(private readonly settingsService: SettingsService) {
     this.clearImmutablyEffect.subscribe();
+    this.paintSettingsChangeEffect.subscribe();
     this.spreadPaintMutablyEffect.subscribe();
     this.gridSettingsChangeEffect.subscribe();
-    this.paintSettingsChangeEffect.subscribe();
-  }
-
-  clearMutably() {
-    this.state.value.forEach((line) => line.forEach((_, i) => line[i] = 0));
-    this.state.next(this.state.value);
   }
 
   clearImmutably() {
@@ -83,14 +92,22 @@ export class GridService {
     this.spreadPaintMutablySubject.next(startPoint);
   }
 
-  private spreadPaintMutably$(
+  private spreadPaint$(
     startPoint: PointCoordinates,
-    gridValues: Array<Array<number>>,
     gridSettings: GridSettings,
-    paintSettings: PaintSettings,
-  ): Observable<Array<Array<number>>> {
-    return new Observable((observer) => {
-      this.spreadPaintFunctionsMap[paintSettings.spreadingFn](startPoint, gridValues, gridSettings, observer);
-    });
+    spreadingFn: AvailableSpreadingFunction,
+  ) {
+    return this.spreadPaintFunctionsMap[spreadingFn](startPoint, gridSettings).pipe(
+      concatMap((value, i) => {
+        return !i
+          ? of(value)
+          : new Observable<PointCoordinates[]>((observer) => {
+            setTimeout(() => {
+              observer.next(value);
+              observer.complete();
+            }, this.stepPauseTime);
+          });
+      }),
+    );
   }
 }
